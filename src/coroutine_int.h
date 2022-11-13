@@ -1,3 +1,4 @@
+//will use
 #ifndef __COROUTINE_INT_H__
 #define __COROUTINE_INT_H__
 
@@ -46,9 +47,23 @@ struct rq {
     struct task_struct *r[RINGBUFFER_SIZE];
 };
 
+
+
+
 void rq_init(struct rq *rq);
 int rq_enqueue(struct rq *rq, struct task_struct *task);
 struct task_struct *rq_dequeue(struct rq *rq);
+
+////* my code*////
+struct my_rq {
+    unsigned int in; /* dequeue at out, enqueue  at in*/
+    unsigned int mask; /* the size is power of two, so mask will be size - 1 */
+    struct task_struct *r[RINGBUFFER_SIZE];
+};
+void my_rq_init(struct my_rq *rq);
+int my_addstack(struct my_rq *rq, struct task_struct *task);
+struct task_struct *my_destack(struct my_rq *rq);
+////////////////
 
 /* main data structure */
 
@@ -63,6 +78,10 @@ struct cr {
     /* scheduler - chose by the flags */
     struct rq rq; /* FIFO */
     struct rb_root root; /* Default */
+    
+    ////* my code*////
+    struct my_rq myrq;//使用FILO的方式排班
+    //////////////////
 
     /* sched operations */
     int (*schedule)(struct cr *cr, job_t func, void *args);

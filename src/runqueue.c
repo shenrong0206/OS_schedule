@@ -7,7 +7,7 @@ void rq_init(struct rq *rq)
     // setup the ring buffer
     rq->out = 0;
     rq->in = 0;
-    rq->mask = RINGBUFFER_SIZE - 1;
+    rq->mask = RINGBUFFER_SIZE - 1;//定義最大size
 }
 
 static inline unsigned int __ringbuffer_unused(struct rq *rq)
